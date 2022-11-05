@@ -1,0 +1,18 @@
+h1 
+{
+    color:rgb(6, 54, 95);
+    text-align: center;
+}
+
+.background
+{
+    background-color: rgb(186, 225, 247);
+}
+
+canvas
+{
+    border-style: solid;
+    background-color: white;
+    width: 400px;
+    height: 400px;
+}
