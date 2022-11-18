@@ -2,6 +2,12 @@ h1
 {
     color:rgb(6, 54, 95);
     text-align: center;
+    font-family: Roboto;
+}
+
+label
+{
+    font-family: Roboto;
 }
 
 .background
