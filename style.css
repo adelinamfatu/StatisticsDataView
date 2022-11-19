@@ -5,7 +5,7 @@ h1
     font-family: Roboto;
 }
 
-label
+label, h2
 {
     font-family: Roboto;
 }
@@ -15,10 +15,3 @@ label
     background-color: rgb(186, 225, 247);
 }
 
-canvas
-{
-    border-style: solid;
-    background-color: white;
-    width: 400px;
-    height: 400px;
-}
