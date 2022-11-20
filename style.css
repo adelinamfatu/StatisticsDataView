@@ -7,7 +7,9 @@ h1
 
 label, h2
 {
+    color:rgb(6, 54, 95);
     font-family: Roboto;
+    text-align: center;
 }
 
 .background
@@ -15,3 +17,33 @@ label, h2
     background-color: rgb(186, 225, 247);
 }
 
+svg
+{
+    background-color: white;
+    border-color: black;
+    width: 600;
+    height: 600;
+    display: block;
+    margin: auto;
+}
+
+.align_center
+{
+    display: block;
+    margin: 0 auto;
+}
+
+button
+{
+    cursor: pointer;
+    border-radius: 12px;
+    background-color: aliceblue;
+    color: rgb(6, 54, 95);
+    border: 1px solid rgb(6, 54, 95);
+}
+
+.button:hover
+{
+    background-color: rgb(6, 54, 95);
+    color: aliceblue;
+}

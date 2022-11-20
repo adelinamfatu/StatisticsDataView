@@ -81,10 +81,23 @@ async function getJSONData()
 
         for(year = 2006; year < 2021; year++)
         {
+            yearFormat = '"an": ' + '"' + year + '"' + ',';
+            //life expectancy
             jsonText += countryFormat + 
-            '"an": ' + '"' + year + '"' + ',' +
-            '"indicator": ' + '"' + 'SV'  + '"' + ',' +
-            '"valoare": ' + lifeExpectancy.value[year - 2006] + "},";
+                    yearFormat +
+                    '"indicator": ' + '"' + 'SV'  + '"' + ',' +
+                    '"valoare": ' + lifeExpectancy.value[year - 2006] + "},";
+            
+            //population
+            jsonText += countryFormat + yearFormat +
+                '"indicator": ' + '"' + 'POP'  + '"' + ',' +
+                '"valoare": ' + population.value[year - 2006] + "},";
+
+            //gdp
+
+            jsonText += countryFormat + yearFormat +
+                '"indicator": ' + '"' + 'PIB'  + '"' + ',' +
+                '"valoare": ' + GDP.value[year - 2006] + "},";
         }
     }
 
