@@ -20,9 +20,9 @@ label, h2
 svg
 {
     background-color: white;
-    border-color: black;
-    width: 600;
-    height: 600;
+    width: 800px;
+    height: 400px;
+    border: 1px solid black;
     display: block;
     margin: auto;
 }
@@ -40,6 +40,12 @@ button
     background-color: aliceblue;
     color: rgb(6, 54, 95);
     border: 1px solid rgb(6, 54, 95);
+}
+
+button:disabled
+{
+    pointer-events: none;
+    opacity: 0.65;
 }
 
 .button:hover

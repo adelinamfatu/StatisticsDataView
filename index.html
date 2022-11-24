@@ -12,7 +12,11 @@
         </div>
         <br>
         <h2>Grafic evolutie</h2>
-        <div><svg></svg></div>
+        <div>
+            <svg id="svg">
+                <g id="bars"></g>
+            </svg>
+        </div>
         <br>
         <label class="align_center" for="indicator-dropdown">Alege un indicator:</label>
         <select name="indicator" id="indicator-dropdown" class="align_center"></select>
@@ -20,6 +24,6 @@
         <label class="align_center" for="country-dropdown">Alege o tara:</label>
         <select name="country" id="country-dropdown" class="align_center"></select>
         <br>
-        <button class="align_center button" type="button" onclick="showEvolutionGraphic()">Afisare grafic</button>
+        <button class="align_center button" id="btnShowGraph" type="button" onclick="showEvolutionGraphic()">Afisare grafic</button>
     </body>
 </html>

@@ -1,15 +1,21 @@
 window.addEventListener("load", main);
 
+var btn;
 var indicators;
 var countries;
 var jsonText = "[";
 var data;
+var svg, bars, height, width;
+document.addEventListener('DOMContentLoaded', getSVG);
 
 async function main() 
 {
+    btn = document.getElementById("btnShowGraph");
+    btn.disabled = true;
     await fetchData();
     populateSelect();
     await getJSONData();
+    btn.disabled = false;
 }
 
 var jsondata;
@@ -109,7 +115,21 @@ async function getJSONData()
     data = JSON.parse(jsonText);
 }
 
+function getSVG()
+{
+    svg = document.getElementById("svg");
+    bars = document.getElementById("bars");
+    var dimensions = svg.getBoundingClientRect();
+    height = dimensions.height;
+    width = dimensions.width;
+}
+
 function showEvolutionGraphic()
 {
-    
+    var bar = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+    bar.setAttribute("x", 0);
+    bar.setAttribute("y", 0);
+    bar.setAttribute("width", 10);
+    bar.setAttribute("height", 10);
+    bars.append(bar);
 }
