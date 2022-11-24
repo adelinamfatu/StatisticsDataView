@@ -1,6 +1,7 @@
 window.addEventListener("load", main);
 
 var btn;
+var indicatorSelect, countrySelect; 
 var indicators;
 var countries;
 var jsonText = "[";
@@ -29,7 +30,7 @@ async function fetchData()
 
 async function populateSelect()
 {
-    var indicatorSelect = document.getElementById("indicator-dropdown");
+    indicatorSelect = document.getElementById("indicator-dropdown");
 
     //get distinct indicators from json
     indicators = new Set(jsondata?.map(i => i.indicator));
@@ -43,7 +44,7 @@ async function populateSelect()
         indicatorSelect.add(option);
     }
 
-    var countrySelect = document.getElementById("country-dropdown");
+    countrySelect = document.getElementById("country-dropdown");
 
     //get distinct countries from json
     countries = new Set(jsondata?.map(c => c.tara));
@@ -117,8 +118,11 @@ async function getJSONData()
 
 function getSVG()
 {
+    //get svg and bars of the histogram
     svg = document.getElementById("svg");
     bars = document.getElementById("bars");
+    
+    //get svg dimensions
     var dimensions = svg.getBoundingClientRect();
     height = dimensions.height;
     width = dimensions.width;
@@ -126,10 +130,43 @@ function getSVG()
 
 function showEvolutionGraphic()
 {
-    var bar = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-    bar.setAttribute("x", 0);
-    bar.setAttribute("y", 0);
-    bar.setAttribute("width", 10);
-    bar.setAttribute("height", 10);
-    bars.append(bar);
+    //get indicators from selector
+    var indicator = indicatorSelect.options[indicatorSelect.selectedIndex].text;
+    var country = countrySelect.options[countrySelect.selectedIndex].text;
+    
+    //get higher value
+    var max = Math.max(...data.filter(v => v.tara == country &&
+                        v.indicator == indicator)
+                    .map(v => v.valoare));
+
+    //get data for selected indicators
+    var values = [];
+    var barX = 0;
+    var barY = height;
+    for(year = 2006; year < 2021; year++)
+    {
+        var value = data.filter(v => v.tara == country &&
+                                    v.indicator == indicator &&
+                                    v.an == year.toString())
+                                .map(v => v.valoare)[0];
+        values.push(value);
+
+        //get values for bar dimensions
+        var barWidth = width / values.length;
+        var barHeight = value / max * height;
+        console.log(barWidth);
+        console.log(barHeight);
+        
+        barX += barWidth; 
+        
+        //create bars for histogram
+        var bar = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        bar.setAttribute("x", barX);
+        bar.setAttribute("y", barY);
+        bar.setAttribute("width", barWidth);
+        bar.setAttribute("height", barHeight);
+        bars.append(bar);
+    }
+
+    
 }
