@@ -124,8 +124,10 @@ function getSVG()
     
     //get svg dimensions
     var dimensions = svg.getBoundingClientRect();
-    height = dimensions.height;
-    width = dimensions.width;
+    height = dimensions.height - 2;
+    width = dimensions.width - 2;
+    console.log(height);
+    console.log(width);
 }
 
 function showEvolutionGraphic()
@@ -138,11 +140,10 @@ function showEvolutionGraphic()
     var max = Math.max(...data.filter(v => v.tara == country &&
                         v.indicator == indicator)
                     .map(v => v.valoare));
+    max *= 1.5;
 
     //get data for selected indicators
     var values = [];
-    var barX = 0;
-    var barY = height;
     for(year = 2006; year < 2021; year++)
     {
         var value = data.filter(v => v.tara == country &&
@@ -150,23 +151,24 @@ function showEvolutionGraphic()
                                     v.an == year.toString())
                                 .map(v => v.valoare)[0];
         values.push(value);
+    }
 
-        //get values for bar dimensions
-        var barWidth = width / values.length;
+    //draw graph
+    var barX = 0;
+    var barWidth = width / values.length;
+    for(year = 2006; year < 2021; year++)
+    {
+        //get value for bar height
         var barHeight = value / max * height;
-        console.log(barWidth);
-        console.log(barHeight);
-        
-        barX += barWidth; 
         
         //create bars for histogram
         var bar = document.createElementNS("http://www.w3.org/2000/svg", "rect");
         bar.setAttribute("x", barX);
-        bar.setAttribute("y", barY);
+        bar.setAttribute("y", height - barHeight);
         bar.setAttribute("width", barWidth);
         bar.setAttribute("height", barHeight);
         bars.append(bar);
-    }
 
-    
+        barX += barWidth + 5;   
+    }
 }
