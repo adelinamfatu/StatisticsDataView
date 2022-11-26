@@ -296,7 +296,7 @@ function showBubbleChart()
     var POPMin = Math.min(...POPValues.map(v => v.valoare));
     var POPMax = Math.max(...POPValues.map(v => v.valoare));
     POPMax -= POPMin;
-    var thresholdPOP = 0.5 * POPMin;
+    var thresholdPOP = POPMin;
     POPMax += 2 * thresholdPOP;
 
     var GDPMin = Math.min(...GDPValues.map(v => v.valoare));
@@ -315,17 +315,19 @@ function showBubbleChart()
         var y = heightC - (GDPValue - GDPMin + thresholdGDP) / GDPMax * heightC;
         
         var POPValue = POPValues.filter(v => v.tara == country)[0].valoare;
-        var radMin = 5;
-        var radMax = 30;
-        var radius = 5;
+        var radMax = 50;
+        var radius = (POPValue - POPMin + thresholdPOP) / POPMax * radMax;
 
         //random color
-        
+        var r = Math.floor(Math.random() * 256);
+        var g = 100 + Math.floor(Math.random() * 256);
+        var b = 50 + Math.floor(Math.random() * 256);
+        var color = "rgb(" + r + "," + g + "," + b + ")";
 
         //draw circle
         context.beginPath();
-        context.arc(x, y, 10, 0, 2 * Math.PI);
-        context.fillStyle = "red";
+        context.arc(x, y, radius, 0, 2 * Math.PI);
+        context.fillStyle = color;
         context.fill();
         context.stroke();
     }
