@@ -1,20 +1,24 @@
 h1 
 {
-    color:rgb(6, 54, 95);
+    color: #404258;
     text-align: center;
     font-family: Roboto;
 }
 
 label, h2
 {
-    color:rgb(6, 54, 95);
+    color:#404258;
     font-family: Roboto;
     text-align: center;
 }
 
 .background
 {
-    background-color: rgb(186, 225, 247);
+    background-color: #EEEEEE;
+    background-image: url("media/background1.jpg"), url("media/background2.jpg");
+    background-size: 20% 100%;
+    background-position: left, right;
+    background-repeat: no-repeat;
 }
 
 svg
@@ -37,9 +41,9 @@ button
 {
     cursor: pointer;
     border-radius: 12px;
-    background-color: aliceblue;
-    color: rgb(6, 54, 95);
-    border: 1px solid rgb(6, 54, 95);
+    background-color: grey;
+    color: #EEEEEE;
+    border: 1px solid black;
 }
 
 button:disabled

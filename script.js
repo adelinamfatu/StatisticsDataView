@@ -7,6 +7,7 @@ var countries;
 var jsonText = "[";
 var data;
 var svg, bars, height, width;
+var barExist = 1;
 document.addEventListener('DOMContentLoaded', getSVG);
 
 async function main() 
@@ -136,14 +137,20 @@ function showEvolutionGraphic()
     var indicator = indicatorSelect.options[indicatorSelect.selectedIndex].text;
     var country = countrySelect.options[countrySelect.selectedIndex].text;
     
-    //get higher value
+    //get higher and lowest value
     var max = Math.max(...data.filter(v => v.tara == country &&
                         v.indicator == indicator)
                     .map(v => v.valoare));
-    max *= 1.5;
+    var min = Math.min(...data.filter(v => v.tara == country &&
+                        v.indicator == indicator)
+                    .map(v => v.valoare));
+    max -= min;
+    max *= 1.3;
+    var threshold = 0.1 * max;
+
+    var values = [];
 
     //get data for selected indicators
-    var values = [];
     for(year = 2006; year < 2021; year++)
     {
         var value = data.filter(v => v.tara == country &&
@@ -153,22 +160,66 @@ function showEvolutionGraphic()
         values.push(value);
     }
 
-    //draw graph
-    var barX = 0;
-    var barWidth = width / values.length;
-    for(year = 2006; year < 2021; year++)
-    {
-        //get value for bar height
-        var barHeight = value / max * height;
-        
-        //create bars for histogram
-        var bar = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-        bar.setAttribute("x", barX);
-        bar.setAttribute("y", height - barHeight);
-        bar.setAttribute("width", barWidth);
-        bar.setAttribute("height", barHeight);
-        bars.append(bar);
+    var barX = 5;
+    var barWidth = (width - 16 * 5) / 15; 
 
-        barX += barWidth + 5;   
+    //create bars for histogram
+    if(barExist == 1)
+    {
+        for(year = 2006, i = 0; year < 2021 && i < values.length; year++, i++)
+        {
+            //get value for bar height
+            var barHeight = (values[i] - min + threshold) / max * height;
+
+            var bar = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+            bar.setAttributeNS(null, "id", year);
+            bar.setAttributeNS(null, "x", barX);
+            bar.setAttributeNS(null, "y", height - barHeight);
+            bar.setAttributeNS(null, "width", barWidth);
+            bar.setAttributeNS(null, "height", barHeight);
+            bar.setAttributeNS(null, "fill", "#B7C4CF");
+            bars.append(bar);
+
+            barX += barWidth + 5; 
+        }
+        barExist = 0;
+
+        //add legend
+        var text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        text.textContent = "Graficul ";
+        if(indicator == "SV")
+        {
+            text.textContent += "sperantei la viata ";
+        }
+        else if(indicator == "POP")
+        {
+            text.textContent += "populatiei ";
+        }
+        else
+        {
+            text.textContent += "PIB-ului ";
+        }
+        text.textContent += "al tarii " + country + " pe perioada 2006-2020";
+        text.setAttributeNS(null, "x", 50);
+        text.setAttributeNS(null, "y", 10);
+        svg.append(text);
+    }
+    else
+    {
+        for(year = 2006, i = 0; year < 2021 && i < values.length; year++, i++)
+        {
+            var barHeight = (values[i] - min + threshold) / max * height;
+
+            //var id = '"' + year + '"';
+            var bar = document.getElementById(year);
+            bar.setAttributeNS(null, "id", year);
+            bar.setAttributeNS(null, "x", barX);
+            bar.setAttributeNS(null, "y", height - barHeight);
+            bar.setAttributeNS(null, "width", barWidth);
+            bar.setAttributeNS(null, "height", barHeight);
+            bars.append(bar);
+
+            barX += barWidth + 5; 
+        }
     }
 }
