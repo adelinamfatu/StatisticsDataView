@@ -3,11 +3,13 @@ window.addEventListener("load", main);
 var btn;
 var indicatorSelect, countrySelect; 
 var indicators;
-var countries;
+var countries, countriesFullName;
 var jsonText = "[";
 var data;
 var svg, bars, height, width;
 var barExist = 1;
+var title = document.createElementNS("http://www.w3.org/2000/svg", "title")
+var currentValues = [];
 document.addEventListener('DOMContentLoaded', getSVG);
 
 async function main() 
@@ -25,6 +27,9 @@ async function fetchData()
 {
     //get data from local json
     jsondata = await fetch("./media/eurostat.json")
+        .then((response) => response.json())
+        .then((data) => { return data; });
+    countriesFullName = await fetch("./media/countries.json")
         .then((response) => response.json())
         .then((data) => { return data; });
 }
@@ -177,32 +182,16 @@ function showEvolutionGraphic()
             bar.setAttributeNS(null, "y", height - barHeight);
             bar.setAttributeNS(null, "width", barWidth);
             bar.setAttributeNS(null, "height", barHeight);
-            bar.setAttributeNS(null, "fill", "#B7C4CF");
+            bar.setAttributeNS(null, "fill", "#F1D3B3");
             bars.append(bar);
+
+            //add event for mouseover and mouseout
+            bar.addEventListener("mouseover", showTooltip);
+            bar.addEventListener("mouseout", revertChanges);
 
             barX += barWidth + 5; 
         }
         barExist = 0;
-
-        //add legend
-        var text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        text.textContent = "Graficul ";
-        if(indicator == "SV")
-        {
-            text.textContent += "sperantei la viata ";
-        }
-        else if(indicator == "POP")
-        {
-            text.textContent += "populatiei ";
-        }
-        else
-        {
-            text.textContent += "PIB-ului ";
-        }
-        text.textContent += "al tarii " + country + " pe perioada 2006-2020";
-        text.setAttributeNS(null, "x", 50);
-        text.setAttributeNS(null, "y", 10);
-        svg.append(text);
     }
     else
     {
@@ -222,4 +211,45 @@ function showEvolutionGraphic()
             barX += barWidth + 5; 
         }
     }
+
+    //add legend
+    //var text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    var text = document.getElementById("text");
+    text.textContent = "Graficul ";
+    if(indicator == "SV")
+    {
+        text.textContent += "sperantei la viata ";
+    }
+    else if(indicator == "POP")
+    {
+        text.textContent += "populatiei ";
+    }
+    else
+    {
+        text.textContent += "PIB-ului ";
+    }
+    text.textContent += "al tarii " 
+                    + (countriesFullName.filter(c => c.tara == country))[0].nume
+                    + " pe perioada 2006-2020";
+    text.setAttributeNS(null, "x", width / 4);
+
+    //save current values locally
+    currentValues = values;
+}
+
+function showTooltip()
+{
+    //set new color
+    this.setAttributeNS(null, "fill", "#C7BCA1");
+
+    //tooltip
+    var text = "Anul: " + this.id + "\n" + "Valoare: " + currentValues[this.id - 2006];
+    title.textContent = text;
+    this.appendChild(title);
+}
+
+function revertChanges()
+{
+    //revert to initial color
+    this.setAttributeNS(null, "fill", "#F1D3B3");
 }

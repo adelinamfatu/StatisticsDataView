@@ -41,19 +41,26 @@ button
 {
     cursor: pointer;
     border-radius: 12px;
-    background-color: grey;
-    color: #EEEEEE;
+    background-color: #B7C4CF;
+    color: white;
     border: 1px solid black;
 }
 
 button:disabled
 {
     pointer-events: none;
-    opacity: 0.65;
+    opacity: 0.4;
 }
 
 .button:hover
 {
-    background-color: rgb(6, 54, 95);
-    color: aliceblue;
+    background-color: #404258;
+    color: white;
+}
+
+.text
+{
+    color:#404258;
+    font-family: Roboto;
+    text-align: center;
 }
