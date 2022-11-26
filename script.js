@@ -204,7 +204,7 @@ function showEvolutionGraphic()
             bar.setAttributeNS(null, "y", height - barHeight);
             bar.setAttributeNS(null, "width", barWidth);
             bar.setAttributeNS(null, "height", barHeight);
-            bar.setAttributeNS(null, "fill", "#F1D3B3");
+            bar.setAttributeNS(null, "fill", "#F0DBDB");
             bars.append(bar);
 
             //add event for mouseover and mouseout
@@ -262,7 +262,7 @@ function showEvolutionGraphic()
 function showTooltip()
 {
     //set new color
-    this.setAttributeNS(null, "fill", "#C7BCA1");
+    this.setAttributeNS(null, "fill", "#DBA39A");
 
     //tooltip
     var text = "Anul: " + this.id + "\n" + "Valoare: " + currentValues[this.id - 2006];
@@ -273,7 +273,7 @@ function showTooltip()
 function revertChanges()
 {
     //revert to initial color
-    this.setAttributeNS(null, "fill", "#F1D3B3");
+    this.setAttributeNS(null, "fill", "#F0DBDB");
 }
 
 function showBubbleChart()
@@ -286,7 +286,6 @@ function showBubbleChart()
 
 function drawBubbles(year)
 {
-    console.log("Am intrat");
     //clear canvas
     context.clearRect(0, 0, widthC, heightC);
 
@@ -347,6 +346,26 @@ function drawBubbles(year)
     context.textAlign = "center";
     context.fillStyle = "black";
     context.fillText(year, widthC / 2, 30);
+
+    context.beginPath();
+    context.font = "10px Roboto";
+    context.textAlign = "left";
+    context.fillText("PIB", 5, 15);
+
+    context.beginPath();
+    context.textAlign = "right";
+    context.fillText("SV", widthC - 5, heightC - 10);
+
+    //draw axes in canvas
+    context.beginPath();
+    context.moveTo(10, 20);
+    context.lineTo(10, heightC - 10);
+    context.stroke();
+
+    context.beginPath();
+    context.moveTo(10, heightC - 10);
+    context.lineTo(widthC - 20, heightC - 10);
+    context.stroke();
 }
 
 function animateBubbleChart()
