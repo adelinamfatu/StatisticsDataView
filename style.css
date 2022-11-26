@@ -21,7 +21,7 @@ label, h2
     background-repeat: no-repeat;
 }
 
-svg, canvas
+svg
 {
     background-color: white;
     width: 800px;
@@ -67,6 +67,8 @@ button:disabled
 
 canvas
 {
-    width: 800px;
-    height: 400px;
+    background-color: white;
+    border: 1px solid black;
+    display: block;
+    margin: auto;
 }
