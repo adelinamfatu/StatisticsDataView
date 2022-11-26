@@ -1,6 +1,6 @@
 window.addEventListener("load", main);
 
-var btnHistogram, btnBubbleChart;
+var btnHistogram, btnBubbleChart, btnAnimate;
 var indicatorSelect, countrySelect; 
 var indicators;
 var countries, countriesFullName;
@@ -17,13 +17,16 @@ async function main()
 {
     btnHistogram = document.getElementById("btnShowGraph");
     btnBubbleChart = document.getElementById("btnBubbleChart");
+    btnAnimate = document.getElementById("btnAnimate");
     btnHistogram.disabled = true;
     btnBubbleChart.disabled = true;
+    btnAnimate.disabled = true;
     await fetchData();
     populateSelect();
     await getJSONData();
     btnHistogram.disabled = false;
     btnBubbleChart.disabled = false;
+    btnAnimate.disabled = false;
 }
 
 var jsondata;
@@ -275,17 +278,23 @@ function revertChanges()
 
 function showBubbleChart()
 {
-    //clear canvas
-    context.clearRect(0, 0, widthC, heightC);
-
     //get selected year
     var year = yearsSelect.options[yearsSelect.selectedIndex].text;
+
+    drawBubbles(year);
+}
+
+function drawBubbles(year)
+{
+    console.log("Am intrat");
+    //clear canvas
+    context.clearRect(0, 0, widthC, heightC);
 
     //get data for each indicator
     var lifeExpValues = data.filter(v => v.an == year.toString() && v.indicator == "SV");
     var POPValues = data.filter(v => v.an == year.toString() && v.indicator == "POP");
     var GDPValues = data.filter(v => v.an == year.toString() && v.indicator == "PIB");
-    
+
     //get reference dimensions
     var lifeExpMin = Math.min(...lifeExpValues.map(v => v.valoare));
     var lifeExpMax = Math.max(...lifeExpValues.map(v => v.valoare));
@@ -313,7 +322,7 @@ function showBubbleChart()
 
         var GDPValue = GDPValues.filter(v => v.tara == country)[0].valoare;
         var y = heightC - (GDPValue - GDPMin + thresholdGDP) / GDPMax * heightC;
-        
+    
         var POPValue = POPValues.filter(v => v.tara == country)[0].valoare;
         var radMax = 50;
         var radius = (POPValue - POPMin + thresholdPOP) / POPMax * radMax;
@@ -331,4 +340,29 @@ function showBubbleChart()
         context.fill();
         context.stroke();
     }
+
+    //title text
+    context.beginPath();
+    context.font = "30px Roboto";
+    context.textAlign = "center";
+    context.fillStyle = "black";
+    context.fillText(year, widthC / 2, 30);
+}
+
+function animateBubbleChart()
+{
+    //timeout start
+    var timeout = 0;
+
+    for(year = 2006; year < 2021; year++)
+    {
+        //increase timeout
+        show(year, timeout);
+        timeout += 2000;
+    }
+}
+
+function show(year, timeout)
+{
+    setTimeout(drawBubbles, timeout, year);
 }
