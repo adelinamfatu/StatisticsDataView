@@ -11,6 +11,7 @@
             <h1>Vizualizare date</h1>
         </div>
         <br>
+        <br>
         <h2>Grafic evolutie</h2>
         <div>
             <svg id="svg">
@@ -25,6 +26,23 @@
         <label class="align_center" for="country-dropdown">Alege o tara:</label>
         <select name="country" id="country-dropdown" class="align_center"></select>
         <br>
-        <button class="align_center button" id="btnShowGraph" type="button" onclick="showEvolutionGraphic()">Afisare grafic</button>
+        <button class="align_center button" id="btnShowGraph" type="button" onclick="showEvolutionGraphic()">Afisare histograma</button>
+        <br>
+        <br>
+        <br>
+        <h2>Grafic cu bule</h2>
+        <br>
+        <canvas id="canvas"></canvas>
+        <br>
+        <label class="align_center" for="years-dropdown">Alege un an:</label>
+        <select name="years" id="years-dropdown" class="align_center"></select>
+        <br>
+        <button class="align_center button" id="btnBubbleChart" type="button" onclick="showBubbleChart()">Afisare grafic cu bule</button>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
     </body>
 </html>

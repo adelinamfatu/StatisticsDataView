@@ -21,7 +21,7 @@ label, h2
     background-repeat: no-repeat;
 }
 
-svg
+svg, canvas
 {
     background-color: white;
     width: 800px;
@@ -63,4 +63,10 @@ button:disabled
     color:#404258;
     font-family: Roboto;
     text-align: center;
+}
+
+canvas
+{
+    width: 800px;
+    height: 400px;
 }

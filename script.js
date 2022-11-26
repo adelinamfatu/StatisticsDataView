@@ -1,6 +1,6 @@
 window.addEventListener("load", main);
 
-var btn;
+var btnHistogram, btnBubbleChart;
 var indicatorSelect, countrySelect; 
 var indicators;
 var countries, countriesFullName;
@@ -10,16 +10,20 @@ var svg, bars, height, width;
 var barExist = 1;
 var title = document.createElementNS("http://www.w3.org/2000/svg", "title")
 var currentValues = [];
-document.addEventListener('DOMContentLoaded', getSVG);
+var canvas, context, widthC, heightC;
+document.addEventListener('DOMContentLoaded', getSVGAndCanvas);
 
 async function main() 
 {
-    btn = document.getElementById("btnShowGraph");
-    btn.disabled = true;
+    btnHistogram = document.getElementById("btnShowGraph");
+    btnBubbleChart = document.getElementById("btnBubbleChart");
+    btnHistogram.disabled = true;
+    btnBubbleChart.disabled = true;
     await fetchData();
     populateSelect();
     await getJSONData();
-    btn.disabled = false;
+    btnHistogram.disabled = false;
+    btnBubbleChart.disabled = false;
 }
 
 var jsondata;
@@ -62,6 +66,17 @@ async function populateSelect()
         option.text = country;
         option.value = country;
         countrySelect.add(option);
+    }
+
+    yearsSelect = document.getElementById("years-dropdown");
+
+    //populate select
+    for(year = 2006; year < 2021; year++)
+    {
+        var option = document.createElement("option");
+        option.text = year;
+        option.value = year;
+        yearsSelect.add(option);
     }
 }
 
@@ -122,7 +137,7 @@ async function getJSONData()
     data = JSON.parse(jsonText);
 }
 
-function getSVG()
+function getSVGAndCanvas()
 {
     //get svg and bars of the histogram
     svg = document.getElementById("svg");
@@ -132,8 +147,12 @@ function getSVG()
     var dimensions = svg.getBoundingClientRect();
     height = dimensions.height - 2;
     width = dimensions.width - 2;
-    console.log(height);
-    console.log(width);
+    
+    //get canvas and dimensions
+    canvas = document.getElementById("canvas");
+    context = canvas.getContext("2d");
+    widthC = canvas.clientWidth;
+    heightC = canvas.clientHeight;
 }
 
 function showEvolutionGraphic()
@@ -252,4 +271,20 @@ function revertChanges()
 {
     //revert to initial color
     this.setAttributeNS(null, "fill", "#F1D3B3");
+}
+
+function showBubbleChart()
+{
+    //get selected year
+    var year = yearsSelect.options[yearsSelect.selectedIndex].text;
+
+    //get data for each indicator
+    var lifeExpValues = data.filter(v => v.an == year.toString() && v.indicator == "SV");
+    var POPValues = data.filter(v => v.an == year.toString() && v.indicator == "POP");
+    var GDPValues = data.filter(v => v.an == year.toString() && v.indicator == "PIB");
+    
+    for(var i = 0; i < countries.length; i++)
+    {
+
+    }
 }
