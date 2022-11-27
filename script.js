@@ -408,17 +408,56 @@ function populateTable()
     //get data for selected year
     var values = data.filter(v => v.an == year.toString());
 
-    //get mean values
-    var meanLifeExp = 0, meanPOP = 0, meanGDP = 0;
+    //get average values
+    var avgLifeExp = 0, avgPOP = 0, avgGDP = 0;
     for(i = 0; i < values.length; i += 3)
     {
-        meanLifeExp += values[i].valoare;
-        meanPOP += values[i + 1].valoare;
-        meanGDP += values[i + 2].valoare;
+        avgLifeExp += values[i].valoare;
+        avgPOP += values[i + 1].valoare;
+        avgGDP += values[i + 2].valoare;
     }
-    meanLifeExp /= countries.size;
-    meanPOP /= countries.size;
-    meanGDP /= countries.size;
+    avgLifeExp /= countries.size;
+    avgPOP /= countries.size;
+    avgGDP /= countries.size;
+
+    var maxLifeExp = Math.max(...values.filter(v => v.indicator == "SV").map(v => v.valoare));
+    var minLifeExp = Math.min(...values.filter(v => v.indicator == "SV").map(v => v.valoare));
+    var absLifeExp;
+    if(maxLifeExp - avgLifeExp > avgLifeExp - minLifeExp)
+    {
+        absLifeExp = maxLifeExp;
+    }
+    else
+    {
+        absLifeExp = minLifeExp;
+    }
+    var difLifeExp = Math.abs(avgLifeExp - absLifeExp);
+
+    var maxGDP = Math.max(...values.filter(v => v.indicator == "PIB").map(v => v.valoare));
+    var minGDP = Math.min(...values.filter(v => v.indicator == "PIB").map(v => v.valoare));
+    var absGDP;
+    if(maxGDP - avgGDP > avgGDP - minGDP)
+    {
+        absGDP = maxGDP;
+    }
+    else
+    {
+        absGDP = minGDP;
+    }
+    var difGDP = Math.abs(avgGDP - absGDP);
+
+    var maxPOP = Math.max(...values.filter(v => v.indicator == "POP").map(v => v.valoare));
+    var minPOP = Math.min(...values.filter(v => v.indicator == "POP").map(v => v.valoare));
+    var absPOP;
+    if(maxPOP - avgPOP > avgPOP - minPOP)
+    {
+        absPOP = maxPOP;
+    }
+    else
+    {
+        absPOP = minPOP;
+    }
+    var difPOP = Math.abs(avgPOP - absPOP);
 
     var index = 1;
     for(country of countries)
@@ -426,16 +465,41 @@ function populateTable()
         //get country specific data
         var countryValues = values.filter(v => v.tara == country);
 
+        var r, g;
+
         //create rows with data
         var row = table.insertRow(index);
         var cell = row.insertCell(0);
         cell.innerHTML = country;
         cell = row.insertCell(1);
         cell.innerHTML = countryValues[0].valoare;
+        r = 0;
+        g = 255;
+        var color = Math.abs(countryValues[0].valoare - avgLifeExp) / difLifeExp * 255;
+        console.log(countryValues[0].valoare);
+        console.log(color);
+        r += color;
+        g -= color;
+        cell.style.backgroundColor = "rgb(" + r + "," + g + ", 0)";
+
         cell = row.insertCell(2);
         cell.innerHTML = countryValues[1].valoare;
+        r = 0;
+        g = 255;
+        var color = Math.abs(countryValues[1].valoare - avgGDP) / difGDP * 255;
+        r += color;
+        g -= color;
+        cell.style.backgroundColor = "rgb(" + r + "," + g + ", 0)";
+
         cell = row.insertCell(3);
         cell.innerHTML = countryValues[2].valoare;
+        r = 0;
+        g = 255;
+        var color = Math.abs(countryValues[2].valoare - avgPOP) / difPOP * 255;
+        r += color;
+        g -= color;
+        cell.style.backgroundColor = "rgb(" + r + "," + g + ", 0)";
+
         index++;
     }
 }
