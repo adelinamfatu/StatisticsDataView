@@ -1,6 +1,6 @@
 window.addEventListener("load", main);
 
-var btnHistogram, btnBubbleChart, btnAnimate;
+var btnHistogram, btnBubbleChart, btnAnimate, btnTable;
 var indicatorSelect, countrySelect; 
 var indicators;
 var countries, countriesFullName;
@@ -18,15 +18,18 @@ async function main()
     btnHistogram = document.getElementById("btnShowGraph");
     btnBubbleChart = document.getElementById("btnBubbleChart");
     btnAnimate = document.getElementById("btnAnimate");
+    btnTable = document.getElementById("btnTable");
     btnHistogram.disabled = true;
     btnBubbleChart.disabled = true;
     btnAnimate.disabled = true;
+    btnTable.disabled = true;
     await fetchData();
     populateSelect();
     await getJSONData();
     btnHistogram.disabled = false;
     btnBubbleChart.disabled = false;
     btnAnimate.disabled = false;
+    btnTable.disabled = false;
 }
 
 var jsondata;
@@ -384,4 +387,55 @@ function animateBubbleChart()
 function show(year, timeout)
 {
     setTimeout(drawBubbles, timeout, year);
+}
+
+function populateTable()
+{
+    //remove previous data from table
+    var table = document.getElementById("table");
+    var dim = table.rows.length;
+    if(dim > 1)
+    {
+        for(i = 1; i < dim; i++)
+        {
+            table.deleteRow(1);
+        }
+    }
+
+    //get selected year
+    var year = yearsSelect.options[yearsSelect.selectedIndex].text;
+
+    //get data for selected year
+    var values = data.filter(v => v.an == year.toString());
+
+    //get mean values
+    var meanLifeExp = 0, meanPOP = 0, meanGDP = 0;
+    for(i = 0; i < values.length; i += 3)
+    {
+        meanLifeExp += values[i].valoare;
+        meanPOP += values[i + 1].valoare;
+        meanGDP += values[i + 2].valoare;
+    }
+    meanLifeExp /= countries.size;
+    meanPOP /= countries.size;
+    meanGDP /= countries.size;
+
+    var index = 1;
+    for(country of countries)
+    {
+        //get country specific data
+        var countryValues = values.filter(v => v.tara == country);
+
+        //create rows with data
+        var row = table.insertRow(index);
+        var cell = row.insertCell(0);
+        cell.innerHTML = country;
+        cell = row.insertCell(1);
+        cell.innerHTML = countryValues[0].valoare;
+        cell = row.insertCell(2);
+        cell.innerHTML = countryValues[1].valoare;
+        cell = row.insertCell(3);
+        cell.innerHTML = countryValues[2].valoare;
+        index++;
+    }
 }

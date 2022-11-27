@@ -72,3 +72,19 @@ canvas
     display: block;
     margin: auto;
 }
+
+table, th, td
+{
+    border:1px solid black;
+    margin-left: auto;
+    margin-right: auto;
+    border-collapse: collapse;
+}
+
+th, td
+{
+    width: 150px;
+    background-color: white;
+    text-align: center;
+    font-family: Roboto;
+}
