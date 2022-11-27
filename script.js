@@ -476,8 +476,6 @@ function populateTable()
         r = 0;
         g = 255;
         var color = Math.abs(countryValues[0].valoare - avgLifeExp) / difLifeExp * 255;
-        console.log(countryValues[0].valoare);
-        console.log(color);
         r += color;
         g -= color;
         cell.style.backgroundColor = "rgb(" + r + "," + g + ", 0)";
@@ -486,7 +484,7 @@ function populateTable()
         cell.innerHTML = countryValues[1].valoare;
         r = 0;
         g = 255;
-        var color = Math.abs(countryValues[1].valoare - avgGDP) / difGDP * 255;
+        var color = Math.abs(countryValues[1].valoare - avgPOP) / difPOP * 255;
         r += color;
         g -= color;
         cell.style.backgroundColor = "rgb(" + r + "," + g + ", 0)";
@@ -495,7 +493,7 @@ function populateTable()
         cell.innerHTML = countryValues[2].valoare;
         r = 0;
         g = 255;
-        var color = Math.abs(countryValues[2].valoare - avgPOP) / difPOP * 255;
+        var color = Math.abs(countryValues[2].valoare - avgGDP) / difGDP * 255;
         r += color;
         g -= color;
         cell.style.backgroundColor = "rgb(" + r + "," + g + ", 0)";
